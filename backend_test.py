@@ -128,7 +128,8 @@ class FantasyFootballAPITester:
             f"Create Player - {name}",
             "POST",
             "api/players",
-            200
+            200,
+            data=player_data
         )
         
         if success and 'id' in response:
