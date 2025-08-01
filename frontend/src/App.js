@@ -427,6 +427,7 @@ function App() {
                       player={player}
                       onEdit={setEditingPlayer}
                       onDelete={handleDeletePlayer}
+                      getPrimaryPlayerName={getPrimaryPlayerName}
                     />
                   ))}
                   {rolePlayers.length === 0 && (
