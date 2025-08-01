@@ -336,7 +336,7 @@ function App() {
                 {/* Role Budget Summary */}
                 <Card className="bg-white/70 backdrop-blur-sm border-slate-200">
                   <CardContent className="pt-6">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                       <div className="text-center">
                         <p className="text-sm text-slate-600">Budget Assegnato</p>
                         <p className="text-2xl font-bold text-slate-900">{roleInfo.allocated.toFixed(0)}€</p>
@@ -354,6 +354,11 @@ function App() {
                       <div className="text-center">
                         <p className="text-sm text-slate-600">Sforamento</p>
                         <p className="text-2xl font-bold text-orange-600">{roleInfo.overflow.toFixed(0)}€</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-sm text-slate-600">Max Desiderato</p>
+                        <p className="text-2xl font-bold text-purple-600">{roleInfo.max_desired_total.toFixed(0)}€</p>
+                        <p className="text-xs text-slate-500">({roleInfo.player_count} giocatori)</p>
                       </div>
                     </div>
                   </CardContent>
