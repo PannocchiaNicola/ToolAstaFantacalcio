@@ -144,7 +144,7 @@ async def update_budget(budget_request: UpdateBudgetRequest):
 
 @app.get("/api/budget/summary")
 async def get_budget_summary():
-    """Get budget summary with spent amounts and max desired totals"""
+    """Get budget summary with spent amounts and max desired totals (only for primary choices)"""
     try:
         # Get current budget
         budget = budgets_collection.find_one({}, {"_id": 0}, sort=[("created_at", -1)])
@@ -162,9 +162,14 @@ async def get_budget_summary():
         total_max_desired = 0
         
         for role in roles:
-            players = list(players_collection.find({"role": role}, {"price_paid": 1, "max_desired_price": 1}))
-            spent = sum(player.get("price_paid", 0) for player in players)
-            max_desired = sum(player.get("max_desired_price", 0) for player in players)
+            # Get all players for spent calculation
+            all_players = list(players_collection.find({"role": role}, {"price_paid": 1, "max_desired_price": 1, "is_primary_choice": 1}))
+            spent = sum(player.get("price_paid", 0) for player in all_players)
+            
+            # Get only primary choices for max desired calculation
+            primary_players = [p for p in all_players if p.get("is_primary_choice", True)]
+            max_desired = sum(player.get("max_desired_price", 0) for player in primary_players)
+            
             allocated = budget.get(f"{role}_budget", 0)
             
             summary["roles"][role] = {
@@ -173,7 +178,8 @@ async def get_budget_summary():
                 "remaining": allocated - spent,
                 "overflow": max(0, spent - allocated),
                 "max_desired_total": max_desired,
-                "player_count": len(players)
+                "player_count": len(all_players),
+                "primary_choices_count": len(primary_players)
             }
             total_spent += spent
             total_max_desired += max_desired
