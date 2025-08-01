@@ -602,14 +602,14 @@ function PlayerForm({ player, setPlayer, onSubmit, onCancel, isEditing, primaryP
 }
 
 // Player Card Component
-function PlayerCard({ player, onEdit, onDelete }) {
+function PlayerCard({ player, onEdit, onDelete, getPrimaryPlayerName }) {
   const isPrimary = player.is_primary_choice;
   
   return (
     <Card className={`transition-all duration-200 hover:shadow-md ${
       isPrimary 
         ? 'bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 ring-1 ring-emerald-200' 
-        : 'bg-white/60 backdrop-blur-sm border-slate-200'
+        : 'bg-white/60 backdrop-blur-sm border-slate-200 ml-6'
     }`}>
       <CardContent className="pt-4">
         <div className="flex items-center justify-between">
@@ -623,7 +623,12 @@ function PlayerCard({ player, onEdit, onDelete }) {
                   Prima Scelta
                 </Badge>
               )}
-              {!isPrimary && (
+              {!isPrimary && player.related_to_player_id && (
+                <Badge variant="outline" className="text-xs bg-orange-50 text-orange-700">
+                  Riserva → {getPrimaryPlayerName(player.related_to_player_id)}
+                </Badge>
+              )}
+              {!isPrimary && !player.related_to_player_id && (
                 <Badge variant="outline" className="text-xs">
                   Riserva #{player.priority_order}
                 </Badge>
