@@ -139,15 +139,89 @@ class FantasyFootballAPITester:
             return response['id']
         return None
 
-    def test_get_players_by_role(self, role):
-        """Test getting players by specific role"""
+    def test_get_primary_players_by_role(self, role):
+        """Test getting primary players by specific role for dropdown"""
         success, response = self.run_test(
-            f"Get Players by Role - {role}",
+            f"Get Primary Players by Role - {role}",
             "GET",
-            f"api/players/role/{role}",
+            f"api/players/primary/{role}",
             200
         )
         return success, response
+
+    def test_relationship_system(self):
+        """Test the new player relationship system"""
+        print("\n🔗 Testing Player Relationship System")
+        print("-" * 40)
+        
+        # Test creating primary and backup players with relationships
+        role = "portiere"
+        
+        # Create primary players
+        primary1_id = self.test_create_player("Butez", "Monza", role, 8.0, True)
+        primary2_id = self.test_create_player("Leali", "Genoa", role, 6.0, True)
+        
+        if not primary1_id or not primary2_id:
+            print("❌ Failed to create primary players for relationship test")
+            return False
+        
+        # Test getting primary players for dropdown
+        success, primaries = self.test_get_primary_players_by_role(role)
+        if not success:
+            print("❌ Failed to get primary players for dropdown")
+            return False
+        
+        # Verify primary players are returned correctly
+        primary_names = [p['name'] for p in primaries]
+        if "Butez" not in primary_names or "Leali" not in primary_names:
+            print("❌ Primary players not found in dropdown response")
+            return False
+        print(f"✅ Primary players dropdown: {primary_names}")
+        
+        # Create backup players related to specific primaries
+        backup1_id = self.test_create_player("Skorupski", "Bologna", role, 5.0, False, primary1_id)
+        backup2_id = self.test_create_player("Caprile", "Napoli", role, 4.0, False, primary2_id)
+        
+        if not backup1_id or not backup2_id:
+            print("❌ Failed to create backup players with relationships")
+            return False
+        
+        # Test getting players by role to verify organization
+        success, organized_players = self.test_get_players_by_role(role)
+        if not success:
+            print("❌ Failed to get organized players by role")
+            return False
+        
+        # Verify organization: primary followed by its backups
+        print(f"✅ Player organization test:")
+        for i, player in enumerate(organized_players):
+            is_primary = player.get('is_primary_choice', True)
+            related_to = player.get('related_to_player_id')
+            print(f"   {i+1}. {player['name']} - {'Primary' if is_primary else f'Backup of {related_to}'}")
+        
+        # Verify budget calculations only include primary choices
+        success, budget_summary = self.run_test(
+            "Budget Summary with Relationships",
+            "GET",
+            "api/budget/summary",
+            200
+        )
+        
+        if success:
+            role_info = budget_summary['roles'][role]
+            primary_count = role_info['primary_choices_count']
+            total_count = role_info['player_count']
+            max_desired = role_info['max_desired_total']
+            
+            print(f"✅ Budget calculation: {primary_count} primary out of {total_count} total players")
+            print(f"   Max desired total (primaries only): {max_desired}€")
+            
+            # Should be 2 primary players out of 4 total
+            if primary_count != 2 or total_count != 4:
+                print(f"❌ Expected 2 primary out of 4 total, got {primary_count} out of {total_count}")
+                return False
+        
+        return True
 
     def test_update_player(self, player_id, updated_data):
         """Test updating a player"""
