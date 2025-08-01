@@ -41,7 +41,8 @@ function App() {
     price_paid: 0,
     max_desired_price: 0,
     is_primary_choice: true,
-    priority_order: 1
+    priority_order: 1,
+    related_to_player_id: null
   });
 
   const [budgetForm, setBudgetForm] = useState({
