@@ -225,7 +225,7 @@ function App() {
                     {budgetSummary.total_spent.toFixed(0)} / {budgetSummary.total_budget.toFixed(0)} €
                   </p>
                   <p className="text-xs text-blue-600">
-                    Max desiderato: {budgetSummary.total_max_desired.toFixed(0)} €
+                    Max desiderato (prime scelte): {budgetSummary.total_max_desired.toFixed(0)} €
                   </p>
                 </div>
               )}
