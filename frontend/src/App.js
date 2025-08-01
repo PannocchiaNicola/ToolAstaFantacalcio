@@ -163,6 +163,7 @@ function App() {
       if (response.ok) {
         await fetchPlayers();
         await fetchBudgetSummary();
+        await fetchPrimaryPlayersForRole(editingPlayer.role);
         setEditingPlayer(null);
       }
     } catch (error) {
