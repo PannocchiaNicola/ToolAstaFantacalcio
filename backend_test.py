@@ -109,7 +109,7 @@ class FantasyFootballAPITester:
         )
         return success
 
-    def test_create_player(self, name, team, role, price_paid=10.0, is_primary=True):
+    def test_create_player(self, name, team, role, price_paid=10.0, is_primary=True, related_to_player_id=None):
         """Create a test player"""
         player_data = {
             "name": name,
@@ -121,7 +121,8 @@ class FantasyFootballAPITester:
             "price_paid": price_paid,
             "max_desired_price": price_paid + 5,
             "is_primary_choice": is_primary,
-            "priority_order": 1 if is_primary else 2
+            "priority_order": 1 if is_primary else 2,
+            "related_to_player_id": related_to_player_id
         }
         
         success, response = self.run_test(
