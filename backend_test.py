@@ -139,6 +139,16 @@ class FantasyFootballAPITester:
             return response['id']
         return None
 
+    def test_get_players_by_role(self, role):
+        """Test getting players by specific role"""
+        success, response = self.run_test(
+            f"Get Players by Role - {role}",
+            "GET",
+            f"api/players/role/{role}",
+            200
+        )
+        return success, response
+
     def test_get_primary_players_by_role(self, role):
         """Test getting primary players by specific role for dropdown"""
         success, response = self.run_test(
