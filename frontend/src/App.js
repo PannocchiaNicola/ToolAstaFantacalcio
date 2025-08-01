@@ -179,6 +179,7 @@ function App() {
       if (response.ok) {
         await fetchPlayers();
         await fetchBudgetSummary();
+        await fetchPrimaryPlayersForRole(players.find(p => p.id === playerId)?.role);
       }
     } catch (error) {
       console.error('Error deleting player:', error);
