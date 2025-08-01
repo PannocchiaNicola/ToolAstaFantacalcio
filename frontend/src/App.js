@@ -187,8 +187,8 @@ function App() {
   };
 
   const getRoleBudgetInfo = (role) => {
-    if (!budgetSummary) return { allocated: 0, spent: 0, remaining: 0, overflow: 0 };
-    return budgetSummary.roles[role] || { allocated: 0, spent: 0, remaining: 0, overflow: 0 };
+    if (!budgetSummary) return { allocated: 0, spent: 0, remaining: 0, overflow: 0, max_desired_total: 0, player_count: 0 };
+    return budgetSummary.roles[role] || { allocated: 0, spent: 0, remaining: 0, overflow: 0, max_desired_total: 0, player_count: 0 };
   };
 
   if (loading) {
