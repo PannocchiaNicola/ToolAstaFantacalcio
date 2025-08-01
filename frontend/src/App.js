@@ -205,14 +205,12 @@ function App() {
   };
 
   const getPlayersByRole = (role) => {
-    return players
-      .filter(player => player.role === role)
-      .sort((a, b) => {
-        if (a.is_primary_choice !== b.is_primary_choice) {
-          return b.is_primary_choice - a.is_primary_choice;
-        }
-        return a.priority_order - b.priority_order;
-      });
+    return players.filter(player => player.role === role);
+  };
+
+  const getPrimaryPlayerName = (playerId) => {
+    const player = players.find(p => p.id === playerId);
+    return player ? player.name : 'Sconosciuto';
   };
 
   const getRoleBudgetInfo = (role) => {
