@@ -220,9 +220,12 @@ function App() {
             <div className="flex items-center space-x-3">
               {budgetSummary && (
                 <div className="text-right">
-                  <p className="text-sm text-slate-600">Budget totale</p>
+                  <p className="text-sm text-slate-600">Budget speso / totale</p>
                   <p className="font-semibold text-slate-900">
                     {budgetSummary.total_spent.toFixed(0)} / {budgetSummary.total_budget.toFixed(0)} €
+                  </p>
+                  <p className="text-xs text-blue-600">
+                    Max desiderato: {budgetSummary.total_max_desired.toFixed(0)} €
                   </p>
                 </div>
               )}
