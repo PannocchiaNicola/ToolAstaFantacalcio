@@ -110,6 +110,7 @@ function App() {
           goals: 0,
           assists: 0,
           is_penalty_taker: false,
+          is_starter: false,
           price_paid: 0,
           max_desired_price: 0,
           is_primary_choice: true,
