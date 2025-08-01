@@ -456,6 +456,8 @@ function App() {
                 onSubmit={handleUpdatePlayer}
                 onCancel={() => setEditingPlayer(null)}
                 isEditing={true}
+                primaryPlayers={primaryPlayers}
+                role={editingPlayer.role}
               />
             )}
           </DialogContent>
