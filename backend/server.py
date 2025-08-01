@@ -76,12 +76,35 @@ async def get_players():
 
 @app.get("/api/players/role/{role}")
 async def get_players_by_role(role: str):
-    """Get players by role"""
+    """Get players by role organized by primary choices and their related backups"""
     try:
         players = list(players_collection.find({"role": role}, {"_id": 0}))
-        # Sort by priority (primary choices first, then by priority_order)
-        players.sort(key=lambda x: (not x.get('is_primary_choice', True), x.get('priority_order', 1)))
-        return players
+        
+        # Separate primary choices and backups
+        primary_choices = [p for p in players if p.get('is_primary_choice', True)]
+        backup_choices = [p for p in players if not p.get('is_primary_choice', True)]
+        
+        # Organize players: primary choice followed by its related backups
+        organized_players = []
+        
+        # Sort primary choices by creation date or name
+        primary_choices.sort(key=lambda x: x.get('created_at', ''))
+        
+        for primary in primary_choices:
+            organized_players.append(primary)
+            
+            # Find backups related to this primary choice
+            related_backups = [b for b in backup_choices if b.get('related_to_player_id') == primary['id']]
+            related_backups.sort(key=lambda x: x.get('priority_order', 2))
+            
+            organized_players.extend(related_backups)
+        
+        # Add unrelated backup choices at the end
+        unrelated_backups = [b for b in backup_choices if not b.get('related_to_player_id')]
+        unrelated_backups.sort(key=lambda x: x.get('priority_order', 2))
+        organized_players.extend(unrelated_backups)
+        
+        return organized_players
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
