@@ -535,6 +535,18 @@ function PlayerForm({ player, setPlayer, onSubmit, onCancel, isEditing, primaryP
         </div>
       </div>
       
+      <div>
+        <Label htmlFor="notes">Note</Label>
+        <Textarea
+          id="notes"
+          placeholder="Inserisci note personali (es. infortunio, stato di forma, valutazione...)"
+          value={player.notes}
+          onChange={(e) => setPlayer({...player, notes: e.target.value})}
+          rows={3}
+          className="resize-none"
+        />
+      </div>
+      
       <div className="flex items-center space-x-2">
         <Checkbox
           id="is_penalty_taker"
