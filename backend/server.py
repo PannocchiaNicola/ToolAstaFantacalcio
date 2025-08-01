@@ -35,6 +35,7 @@ class Player(BaseModel):
     goals: int = 0
     assists: int = 0
     is_penalty_taker: bool = False
+    is_starter: bool = False  # Titolare
     price_paid: float = 0.0
     max_desired_price: float = 0.0
     is_primary_choice: bool = True
