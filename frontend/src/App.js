@@ -508,6 +508,15 @@ function PlayerForm({ player, setPlayer, onSubmit, onCancel, isEditing }) {
 
       <div className="flex items-center space-x-2">
         <Checkbox
+          id="is_starter"
+          checked={player.is_starter}
+          onCheckedChange={(checked) => setPlayer({...player, is_starter: checked})}
+        />
+        <Label htmlFor="is_starter">Titolare</Label>
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <Checkbox
           id="is_primary_choice"
           checked={player.is_primary_choice}
           onCheckedChange={(checked) => setPlayer({...player, is_primary_choice: checked})}
