@@ -679,6 +679,15 @@ function PlayerCard({ player, onEdit, onDelete, getPrimaryPlayerName }) {
                 Max: {player.max_desired_price}€
               </span>
             </div>
+            
+            {player.notes && (
+              <div className="mt-3 p-2 bg-slate-50 rounded-md border-l-2 border-slate-300">
+                <div className="flex items-start space-x-2">
+                  <FileText className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-slate-600 italic">{player.notes}</p>
+                </div>
+              </div>
+            )}
           </div>
           
           <div className="flex space-x-2">
