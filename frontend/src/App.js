@@ -412,6 +412,8 @@ function App() {
                         onSubmit={handleAddPlayer}
                         onCancel={() => setShowAddPlayer(false)}
                         isEditing={false}
+                        primaryPlayers={primaryPlayers}
+                        role={role.key}
                       />
                     </DialogContent>
                   </Dialog>
