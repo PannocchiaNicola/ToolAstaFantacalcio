@@ -327,6 +327,11 @@ def main():
                 backup_count = len(players) - primary_count
                 print(f"   {role}: {primary_count} primary, {backup_count} backup players")
 
+        # Test the new relationship system
+        if not tester.test_relationship_system():
+            print("❌ Relationship system tests failed")
+            return 1
+
         # Test updating a player
         if created_ids:
             player_id, role, name = created_ids[0]
