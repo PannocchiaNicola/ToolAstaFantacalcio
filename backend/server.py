@@ -216,6 +216,14 @@ async def get_budget_summary():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+@app.get("/api/players/primary/{role}")
+async def get_primary_players_by_role(role: str):
+    """Get only primary choice players by role for dropdown selection"""
+    try:
+        players = list(players_collection.find({
+            "role": role, 
+            "is_primary_choice": True
+        }, {"_id": 0, "id": 1, "name": 1, "team": 1}))
+        return players
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
