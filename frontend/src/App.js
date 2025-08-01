@@ -463,7 +463,9 @@ function App() {
 }
 
 // Player Form Component
-function PlayerForm({ player, setPlayer, onSubmit, onCancel, isEditing }) {
+function PlayerForm({ player, setPlayer, onSubmit, onCancel, isEditing, primaryPlayers, role }) {
+  const availablePrimary = primaryPlayers[role] || [];
+  
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
@@ -547,21 +549,43 @@ function PlayerForm({ player, setPlayer, onSubmit, onCancel, isEditing }) {
         <Checkbox
           id="is_primary_choice"
           checked={player.is_primary_choice}
-          onCheckedChange={(checked) => setPlayer({...player, is_primary_choice: checked})}
+          onCheckedChange={(checked) => setPlayer({
+            ...player, 
+            is_primary_choice: checked,
+            related_to_player_id: checked ? null : player.related_to_player_id
+          })}
         />
         <Label htmlFor="is_primary_choice">Prima scelta</Label>
       </div>
 
       {!player.is_primary_choice && (
-        <div>
-          <Label htmlFor="priority_order">Ordine di priorità</Label>
-          <Input
-            id="priority_order"
-            type="number"
-            min="2"
-            value={player.priority_order}
-            onChange={(e) => setPlayer({...player, priority_order: parseInt(e.target.value) || 2})}
-          />
+        <div className="space-y-3">
+          <div>
+            <Label htmlFor="related_player">Seconda scelta di:</Label>
+            <select
+              id="related_player"
+              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+              value={player.related_to_player_id || ''}
+              onChange={(e) => setPlayer({...player, related_to_player_id: e.target.value || null})}
+            >
+              <option value="">Seleziona prima scelta...</option>
+              {availablePrimary.map((primary) => (
+                <option key={primary.id} value={primary.id}>
+                  {primary.name} ({primary.team})
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <Label htmlFor="priority_order">Ordine di priorità</Label>
+            <Input
+              id="priority_order"
+              type="number"
+              min="2"
+              value={player.priority_order}
+              onChange={(e) => setPlayer({...player, priority_order: parseInt(e.target.value) || 2})}
+            />
+          </div>
         </div>
       )}
 
