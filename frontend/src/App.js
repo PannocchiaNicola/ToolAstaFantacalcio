@@ -59,7 +59,30 @@ function App() {
     fetchPlayers();
     fetchBudget();
     fetchBudgetSummary();
+    fetchPrimaryPlayers();
   }, []);
+
+  // Fetch primary players when active tab changes
+  useEffect(() => {
+    fetchPrimaryPlayersForRole(activeTab);
+  }, [activeTab]);
+
+  const fetchPrimaryPlayers = async () => {
+    const roles = ['portiere', 'difensore', 'centrocampista', 'attaccante'];
+    for (const role of roles) {
+      await fetchPrimaryPlayersForRole(role);
+    }
+  };
+
+  const fetchPrimaryPlayersForRole = async (role) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/players/primary/${role}`);
+      const data = await response.json();
+      setPrimaryPlayers(prev => ({...prev, [role]: data}));
+    } catch (error) {
+      console.error(`Error fetching primary players for ${role}:`, error);
+    }
+  };
 
   const fetchPlayers = async () => {
     try {
