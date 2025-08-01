@@ -8,8 +8,8 @@ import { Checkbox } from './components/ui/checkbox';
 import { Badge } from './components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './components/ui/dialog';
 import { Separator } from './components/ui/separator';
-import { Textarea } from './components/ui/textarea';
-import { Plus, Edit2, Trash2, Target, TrendingUp, Users, DollarSign, FileText } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select';
+import { Plus, Edit2, Trash2, Target, TrendingUp, Users, DollarSign, FileText, ArrowUpDown } from 'lucide-react';
 import './App.css';
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
