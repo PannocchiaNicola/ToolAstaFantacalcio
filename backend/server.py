@@ -144,14 +144,14 @@ async def update_budget(budget_request: UpdateBudgetRequest):
 
 @app.get("/api/budget/summary")
 async def get_budget_summary():
-    """Get budget summary with spent amounts"""
+    """Get budget summary with spent amounts and max desired totals"""
     try:
         # Get current budget
         budget = budgets_collection.find_one({}, {"_id": 0}, sort=[("created_at", -1)])
         if not budget:
             budget = BudgetConfig().dict()
         
-        # Calculate spent amounts by role
+        # Calculate spent amounts and max desired by role
         roles = ["portiere", "difensore", "centrocampista", "attaccante"]
         summary = {
             "total_budget": budget["total_budget"],
@@ -159,21 +159,28 @@ async def get_budget_summary():
         }
         
         total_spent = 0
+        total_max_desired = 0
+        
         for role in roles:
-            players = list(players_collection.find({"role": role}, {"price_paid": 1}))
+            players = list(players_collection.find({"role": role}, {"price_paid": 1, "max_desired_price": 1}))
             spent = sum(player.get("price_paid", 0) for player in players)
+            max_desired = sum(player.get("max_desired_price", 0) for player in players)
             allocated = budget.get(f"{role}_budget", 0)
             
             summary["roles"][role] = {
                 "allocated": allocated,
                 "spent": spent,
                 "remaining": allocated - spent,
-                "overflow": max(0, spent - allocated)
+                "overflow": max(0, spent - allocated),
+                "max_desired_total": max_desired,
+                "player_count": len(players)
             }
             total_spent += spent
+            total_max_desired += max_desired
         
         summary["total_spent"] = total_spent
         summary["total_remaining"] = budget["total_budget"] - total_spent
+        summary["total_max_desired"] = total_max_desired
         
         return summary
     except Exception as e:
