@@ -128,6 +128,7 @@ function App() {
       if (response.ok) {
         await fetchPlayers();
         await fetchBudgetSummary();
+        await fetchPrimaryPlayersForRole(newPlayer.role);
         setNewPlayer({
           name: '',
           team: '',
@@ -139,7 +140,8 @@ function App() {
           price_paid: 0,
           max_desired_price: 0,
           is_primary_choice: true,
-          priority_order: 1
+          priority_order: 1,
+          related_to_player_id: null
         });
         setShowAddPlayer(false);
       }
