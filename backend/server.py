@@ -41,6 +41,7 @@ class Player(BaseModel):
     is_primary_choice: bool = True
     priority_order: int = 1  # 1 = primary, 2+ = backup choices
     related_to_player_id: Optional[str] = None  # ID of the primary choice this backup is related to
+    notes: str = ""  # Note personali per il giocatore
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class BudgetConfig(BaseModel):
