@@ -17,6 +17,7 @@ function App() {
   const [players, setPlayers] = useState([]);
   const [budget, setBudget] = useState(null);
   const [budgetSummary, setBudgetSummary] = useState(null);
+  const [primaryPlayers, setPrimaryPlayers] = useState({});
   const [activeTab, setActiveTab] = useState('portiere');
   const [showAddPlayer, setShowAddPlayer] = useState(false);
   const [showBudgetDialog, setShowBudgetDialog] = useState(false);
