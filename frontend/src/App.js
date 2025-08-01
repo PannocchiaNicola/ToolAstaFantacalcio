@@ -357,8 +357,9 @@ function App() {
                       </div>
                       <div className="text-center">
                         <p className="text-sm text-slate-600">Max Desiderato</p>
+                        <p className="text-xs text-slate-500 mb-1">(solo prime scelte)</p>
                         <p className="text-2xl font-bold text-purple-600">{roleInfo.max_desired_total.toFixed(0)}€</p>
-                        <p className="text-xs text-slate-500">({roleInfo.player_count} giocatori)</p>
+                        <p className="text-xs text-slate-500">({roleInfo.primary_choices_count} su {roleInfo.player_count})</p>
                       </div>
                     </div>
                   </CardContent>
